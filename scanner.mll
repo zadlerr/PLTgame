@@ -3,15 +3,16 @@
 rule token = parse
 	[ ' ' '\t' '\r' '\n'] 	{ token lexbuf }	(* whitespace *)
 	| "##"					{ comment lexbuf }	(* comment start *)	
-    (*
-    | '('					{ LPAREN }		(* delimiters *)
+        | '('					{ LPAREN }		(* delimiters *)
 	| ')'					{ RPAREN }
-	| '['					{ LBRACK }
-	| ']'					{ RBRACK }
 	| '{'					{ LBRACE }
 	| '}'					{ RBRACE }
-	| ';'					{ SEMI }
 	| ','					{ COMMA }
+	| ';'					{ SEMI }
+   
+	 (*
+	| '['					{ LBRACK }
+	| ']'					{ RBRACK }
 	| '.'					{ ACCESS }		(* operators *)
 	| '*'					{ TIMES }
 	| '/'					{ DIVIDE }
@@ -19,12 +20,12 @@ rule token = parse
 	| '+'					{ PLUS }
 	| '-'					{ MINUS }
 	| '<'					{ LT }
-    | "<="                  { LEQ }
-    | '>'                   { GT }
-    | ">="                  { GEQ }
-    | "=="                  { EQ }
-    | "!="                  { NEQ }
-    | '&'					{ AND }
+   	| "<="                  { LEQ }
+   	| '>'                   { GT }
+   	| ">="                  { GEQ }
+   	| "=="                  { EQ }
+   	| "!="                  { NEQ }
+   	| '&'					{ AND }
 	| '|'					{ OR }
 	| '!'					{ NOT }
 	| '='					{ ASSIGN }
@@ -39,16 +40,15 @@ rule token = parse
 	| "else"				{ ELSE }
 	| "while"				{ WHILE }
 	| "return"				{ RETURN }
-	| "int"					{ INT }			
 	| "string"				{ STRING }
 	| "boolean"				{ BOOLEAN }
 	| "void"				{ VOID }
-    | "true"					as lxm { BOOL_LITERAL(bool_of_string lxm ) }
+        | "true"					as lxm { BOOL_LITERAL(bool_of_string lxm ) }
 	| "false"				as lxm { BOOL_LITERAL(bool_of_string lxm ) }
-	|  [ 'a' - 'z'  'A' - 'Z' ][ 'a' - 'z'  'A' - 'Z'  '0' - '9'  '_' ]*   as lxm  { ID ( lxm ) }
-    
-    *)
-    | ['0'- '9']+				as lxm { INT_LITERAL(int_of_string lxm ) }
+	*)
+	| "int"					{ INT }			
+	| [ 'a' - 'z'  'A' - 'Z' ][ 'a' - 'z'  'A' - 'Z'  '0' - '9'  '_' ]*   as lxm  { ID ( lxm ) }
+        | ['0'- '9']+				as lxm { INT_LITERAL(int_of_string lxm ) }
 	| eof					{ EOF }
 		 	 	 		
 	and comment = parse
