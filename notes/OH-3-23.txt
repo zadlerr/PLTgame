@@ -1,0 +1,17 @@
+PLT OH:
+
+get an int main with nothing in it first:
+just returns an integer. 
+
+int main():
+
+in semantic checker checks if we have main function
+llvm will take care of executing for us
+
+microc.ml is a driver that calls everything and brings it all together.
+llvm_analysis.assert will assert if our module is valid, then it'll pass the last line and print the llvm code that the module represents
+for the -a flag we need to add the pretty print things 
+
+menhir - feed in tokens for ast and shows you what ast looks like for them. In the microc slides. Feed it a list of tokens and parser.mly and it prints the tree for us. To generate tokens - julie wrote script on piazza to tokenize program and feed it into menhir. 
+
+
