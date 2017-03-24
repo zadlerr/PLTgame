@@ -1,4 +1,4 @@
-type typ = Int 
+type typ = Int | Bool | Void 
 
 type bind = typ * string
 
