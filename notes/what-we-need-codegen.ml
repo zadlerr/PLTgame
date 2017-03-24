@@ -30,6 +30,7 @@ let translate (globals, functions) =
     | A.Bool -> i1_t
     | A.Void -> void_t in
 
+  (*NO NEED FOR NOW*)
   (* Declare each global variable; remember its value in a map *)
   (* gives back type and value *)
   let global_vars = (* key in string map is the name of globa variable *)
@@ -38,17 +39,20 @@ let translate (globals, functions) =
       in StringMap.add n (L.define_global n init the_module) m in
     List.fold_left global_var StringMap.empty globals in
 
+  (*NEED FOR HW, NOT MAIN*)
   (* Declare printf(), which the print built-in function will call *)
   (* this is a builtin function *)
   (* first it builds the type of printf does by grabbing var_arg function type, look in the docs to see it takes two parameters - return type and list of types of parameter. returns int_32 and takes ina  list of pointers, then the actual function now that we have a type calls declare_functions - name, type and module of function taken as params. *)
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] in
   let printf_func = L.declare_function "printf" printf_t the_module in
 
+  (*NO NEED*)
   (* Declare the built-in printbig() function *)
   (* print_big is example included to show how to work with external library  - see printbig.c *)
   let printbig_t = L.function_type i32_t [| i32_t |] in
   let printbig_func = L.declare_function "printbig" printbig_t the_module in
 
+  (*NEED*)
   (* Define each function (arguments and return type) so we can call it *)
   (* doing similar thing to global_vars - grabs functions from ast and building the llvm types for them and then putting htem into map func_decls, then later we pull stuff out of this map to actually build constructions with them. functions is list we get from ast. First we define func_decl helper function which . name we grab it from the ast, then the formal types are the parameters we are also getting from the ast, then they call define_function again. In the define_function we feed it the name and the type of the function and the module and its gonna build the llvm declaration for that function, then we put all of that into stringMap keyed by name of function. Now we've defined declarations, now we get to where we actually build instructions for body of the functions - where it does stuff.http://releases.llvm.org/2.6/docs/tutorial/JITTutorial2.html. Basic blocks - one entry point and one exit point - meaning if you get into the block you must execute all instructions in order and then leave via exit point. *)
   let function_decls =
@@ -60,6 +64,7 @@ let translate (globals, functions) =
       StringMap.add name (L.define_function name ftype the_module, fdecl) m in
     List.fold_left function_decl StringMap.empty functions in
  
+  (*NEED FOR HW, NOT MAIN*)
   (* build function body looks at the map from earlier - grab info assocaiited with that function - type and maybe arguments, then you get this builder thing. builder_at_end is a thing that you call that builds instructions for you. It takes in a context and a basic block. Gives an instruction builder at the end of the basic block. Imagine we'll repeatedly call it to build list of instructions for us. create a builder using builder_at_end. We give it block to build on. Entry block we just defined. entry_block is the first thing executed in the function body. Can exit in multiple places from function body, but you have to start at one point. So we build the entry_block of the_function - the function we are currently dealing with. then  *) 
   (* Fill in the body of the given function *)
   let build_function_body fdecl =
@@ -67,8 +72,9 @@ let translate (globals, functions) =
     let builder = L.builder_at_end context (L.entry_block the_function) in
 (* unsure what int_format_str is for... just defining a string we are later going to use to format stuff. pass to print function later. Some string you need to pass to llvm when you call print_out function so it knows how to format *)
     let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder in
-    
-    (* Construct the function's "locals": formal arguments and locally
+   
+   (*NO NEED FOR NOW*)
+   (* Construct the function's "locals": formal arguments and locally
        declared variables.  Allocate each on the stack, initialize their
        value, if appropriate, and remember their values in the "locals" map *)
 (* this is part of function builder still. build_alloca allocates memory of the stack. build_store builds a store instruction. So this part is going to go through  *) 
@@ -86,13 +92,14 @@ let translate (globals, functions) =
           (Array.to_list (L.params the_function)) in (*this looks like its grabbing the params llvm gives us and renaming them to match the formal list so then when you generate the instruction it has the name specified in the ast *)
       List.fold_left add_local formals fdecl.A.locals in
 
+    (*NO NEED FOR NOW*)
     (* Return the value for a variable or formal argument *) (* this is where the scoping happens *)
     let lookup n = try StringMap.find n local_vars
                    with Not_found -> StringMap.find n global_vars
     in
 
     (* Construct code for an expression; return its value *) 
-  (* this is going to build the instructions, so its just building the instructions for each of the operations we get from the ast. *)
+    (* this is going to build the instructions, so its just building the instructions for each of the operations we get from the ast. *)
     let rec expr builder = function
 	A.Literal i -> L.const_int i32_t i
       | A.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
@@ -142,6 +149,7 @@ let translate (globals, functions) =
 	Some _ -> ()
       | None -> ignore (f builder) in
 	
+    (*NEED FOR HW?*)
     (* Build the code for the given statement; return the builder for
        the statement's successor *)
     (* at the tope level a function body is a list of stmts so in the stmt builder the expr builder is called. so this builds each statement then returns the builder for the next one.  *)
