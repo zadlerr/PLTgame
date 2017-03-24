@@ -45,13 +45,11 @@ ast.cmo :
 ast.cmx :
 codegen.cmo : ast.cmo
 codegen.cmx : ast.cmx
-venture.cmo : semant.cmo scanner.cmo parser.cmi codegen.cmo ast.cmo
-venture.cmx : semant.cmx scanner.cmx parser.cmx codegen.cmx ast.cmx
+venture.cmo : scanner.cmo parser.cmi codegen.cmo ast.cmo
+venture.cmx : scanner.cmx parser.cmx codegen.cmx ast.cmx
 parser.cmo : ast.cmo parser.cmi
 parser.cmx : ast.cmx parser.cmi
 scanner.cmo : parser.cmi
 scanner.cmx : parser.cmx
-semant.cmo : ast.cmo
-semant.cmx : ast.cmx
 parser.cmi : ast.cmo
 
