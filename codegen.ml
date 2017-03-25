@@ -1,6 +1,6 @@
 module L = Llvm
-module A = Ast
-
+(*open Ast
+*)
 module StringMap = Map.Make(String)
 
 let translate (functions) =
@@ -12,17 +12,17 @@ let translate (functions) =
   and void_t = L.void_type context in
 
   let ltype_of_typ = function
-      A.Int -> i32_t
-    | A.Bool -> i1_t
-    | A.Void -> void_t in
+      Ast.Int -> i32_t
+    | Ast.Bool -> i1_t
+    | Ast.Void -> void_t in
 
 
 (*let function_decls = *)
     let function_decl m fdecl =
-      let name = fdecl.A.fname
+      let name = fdecl.Ast.fname
       and formal_types = Array.of_list []
 (*	Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) fdecl.A.formals) *)
-      in let ftype = L.function_type (ltype_of_typ fdecl.A.typ) formal_types in
+      in let ftype = L.function_type (ltype_of_typ fdecl.Ast.typ) formal_types in
       StringMap.add name (L.define_function name ftype the_module, fdecl) m in
     (*List.fold_left*) function_decl StringMap.empty functions;
 
