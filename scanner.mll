@@ -9,6 +9,7 @@ rule token = parse
 	| '}'					{ RBRACE }
 	| ','					{ COMMA }
 	| ';'					{ SEMI }
+	| "return"				{ RETURN }
    
 	 (*
 	| '['					{ LBRACK }
@@ -39,7 +40,6 @@ rule token = parse
 	| "if"					{ IF }
 	| "else"				{ ELSE }
 	| "while"				{ WHILE }
-	| "return"				{ RETURN }
 	| "string"				{ STRING }
 	| "boolean"				{ BOOLEAN }
 	| "void"				{ VOID }

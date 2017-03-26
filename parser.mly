@@ -3,7 +3,7 @@
 %token <int> INT_LITERAL
 %token <string> ID
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token /* RETURN */ INT
+%token RETURN INT
 
 %token EOF
 
@@ -21,7 +21,9 @@ decls: /* for right now is just one function declaration */
 fdecl:
 	typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
 	{ { typ = $1;
-	    fname = $2 } }
+	    fname = $2;
+	    body = List.rev $8 
+	} }
 
 formals_opt:
 	/* nothing */ { [] }
@@ -48,9 +50,11 @@ vdecl:
 
 stmt_list:
 	/* nothing */ { [] }
+	| stmt_list stmt { $2 :: $1 }
 
-/*	| stmt_list stmt { $2 :: $1 }
-
-empty statement list
 stmt:
-*/
+	  RETURN expr SEMI { Return $2 }
+	| RETURN SEMI	   { Return Noexpr }
+
+expr:
+	INT_LITERAL { Literal($1) }
