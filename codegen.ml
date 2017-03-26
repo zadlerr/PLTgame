@@ -3,7 +3,7 @@ module L = Llvm
 *)
 module StringMap = Map.Make(String)
 
-let translate (functions) =
+let translate (globals, functions) =
   let context = L.global_context () in
   let the_module = L.create_module context "MicroC" 
   and i32_t  = L.i32_type  context
@@ -17,15 +17,13 @@ let translate (functions) =
     | Ast.Void -> void_t in
 
 
-(*let function_decls = *)
+let function_decls = 
     let function_decl m fdecl =
       let name = fdecl.Ast.fname
       and formal_types = Array.of_list []
 (*	Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) fdecl.A.formals) *)
       in let ftype = L.function_type (ltype_of_typ fdecl.Ast.typ) formal_types in
       StringMap.add name (L.define_function name ftype the_module, fdecl) m in
-    (*List.fold_left*) function_decl StringMap.empty functions;
-
-
-  (*List.iter build_function_body functions;*)
+    	List.fold_left function_decl StringMap.empty functions in
   the_module
+

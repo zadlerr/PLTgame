@@ -23,7 +23,7 @@ type func_decl = {
 *)
 }
  
-type program = func_decl
+type program = bind list * func_decl list
 
 (* bind list * func_decl list *)
 (*
