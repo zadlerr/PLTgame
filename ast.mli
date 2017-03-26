@@ -5,7 +5,7 @@ type bind = typ * string
 
 type expr =
 	  Literal of int
-	| Id of string
+(*	| Id of string*)
 	| Noexpr
 
 type stmt =
