@@ -16,7 +16,7 @@ program:
 	decls EOF { $1 }
 
 decls: /* for right now is just one function declaration */
-	decls fdecl { $1 }
+	fdecl { $1 }
 
 fdecl:
 	typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
