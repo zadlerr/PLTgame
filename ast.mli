@@ -5,7 +5,8 @@ type bind = typ * string
 
 type expr =
 	  Literal of int
-(*	| Id of string*)
+	| Id of string
+	| Call of string * expr list
 	| Noexpr
 
 type stmt =
@@ -17,10 +18,9 @@ type stmt =
 type func_decl = {
     typ : typ;
     fname: string;
-    body : stmt list;
-(*    formals : bind list;
+    formals : bind list; 
     locals : bind list;
-*)
+    body : stmt list;
 }
  
 type program = bind list * func_decl list

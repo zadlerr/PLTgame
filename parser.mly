@@ -23,6 +23,8 @@ fdecl:
 	typ ID LPAREN formals_opt RPAREN LBRACE vdecl_list stmt_list RBRACE
 	{ { typ = $1;
 	    fname = $2;
+	    formals = $4;
+	    locals = List.rev $7;
 	    body = List.rev $8 
 	} }
 
@@ -54,8 +56,18 @@ stmt_list:
 	| stmt_list stmt { $2 :: $1 }
 
 stmt:
-	  RETURN expr SEMI { Return $2 }
+	  expr SEMI { Expr $1 }
+	| RETURN expr SEMI { Return $2 }
 	| RETURN SEMI	   { Return Noexpr }
 
 expr:
-	INT_LITERAL { Literal($1) }
+	  INT_LITERAL { Literal($1) }
+	| ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+
+actuals_opt:
+	  /* nothing */ { [] }
+        | actuals_list { List.rev $1 }
+
+actuals_list:
+	  expr	{ [$1] }
+	| actuals_list COMMA expr { $3 :: $1 }
