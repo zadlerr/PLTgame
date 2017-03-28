@@ -61,9 +61,9 @@ let translate (globals, functions) =
         in (* builds at end of basic block. A basic block is simply a container of instructions that execute sequentially*)
         let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder
           in (* llvm int to string. let's see where it's used *)
-	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
+(*	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
 	  in 
-
+*)
  
     let local_vars = 
       let add_formal m (t, n) p = L.set_value_name n p;

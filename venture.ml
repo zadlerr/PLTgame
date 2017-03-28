@@ -14,8 +14,7 @@ let _ =
   in 
   match action with
     Ast -> print_string ("hi")
-  | LLVM_IR -> print_string ("hi")
-(*(Llvm.string_of_llmodule (Codegen.translate ast))*)
+  | LLVM_IR -> print_string (Llvm.string_of_llmodule (Codegen.translate ast)) 
   | Compile -> let m = Codegen.translate ast in
-    Llvm_analysis.assert_valid_module m;
-    print_string (Llvm.string_of_llmodule m)
+      Llvm_analysis.assert_valid_module m;
+      print_string (Llvm.string_of_llmodule m)
