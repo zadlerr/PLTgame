@@ -10,10 +10,11 @@ rule token = parse
 	| ','					{ COMMA }
 	| ';'					{ SEMI }
 	| "return"				{ RETURN }
-	| '"' ([^'"']* as lit) '"'		{ STRING_LITERAL(lit) }   
 	| "int"					{ INT }			
+	| "string"				{ STRING }
 	| [ 'a' - 'z'  'A' - 'Z' ][ 'a' - 'z'  'A' - 'Z'  '0' - '9'  '_' ]*   as lxm  { ID ( lxm ) }
         | ['0'- '9']+				as lxm { INT_LITERAL(int_of_string lxm ) }
+	| '"' ([^'"']* as lit) '"'		{ STRING_LITERAL(lit) }   
 	| eof					{ EOF }
 	
 	 (*
@@ -45,7 +46,6 @@ rule token = parse
 	| "if"					{ IF }
 	| "else"				{ ELSE }
 	| "while"				{ WHILE }
-	| "string"				{ STRING }
 	| "boolean"				{ BOOLEAN }
 	| "void"				{ VOID }
         | "true"					as lxm { BOOL_LITERAL(bool_of_string lxm ) }

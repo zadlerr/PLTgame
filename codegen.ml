@@ -54,7 +54,8 @@ let translate (globals, functions) =
         in (* builds at end of basic block. A basic block is simply a container of instructions that execute sequentially*)
         let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder
           in (* llvm int to string. let's see where it's used *)
-  
+	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
+	  in  
 (* 
      (* Return the value for a variable or formal argument *)
        let lookup n = try StringMap.find n local_vars
@@ -64,10 +65,10 @@ let translate (globals, functions) =
 
     let local_vars = 
       let add_formal m (t, n) p = L.set_value_name n p;
-    let local = L.build_alloca (ltype_of_typ t) n builder in
-      ignore (L.build_store p local builder);
-      StringMap.add n local m 
-        in
+      let local = L.build_alloca (ltype_of_typ t) n builder in
+        ignore (L.build_store p local builder);
+        StringMap.add n local m 
+          in
 
       let add_local m (t, n) =
 	let local_var = L.build_alloca (ltype_of_typ t) n builder

@@ -1,4 +1,6 @@
 int main(){ 
+	int bar;
+	string foo;
 	print(2); 
 	prints("hello world");
 	return 0; }

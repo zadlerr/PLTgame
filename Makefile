@@ -17,6 +17,7 @@ clean :
 	ocamlbuild -clean
 	rm -rf *.diff venture scanner.ml parser.ml parser.mli
 	rm -rf *.cmx *.cmi *.cmo *.cmx *.o *.s *.ll *.out *.exe
+	rm -rf *.lli
 
 # More detailed: build using ocamlc/ocamlopt + ocamlfind to locate LLVM
 
