@@ -1,9 +1,9 @@
 %{ open Ast %}
 
 %token <int> INT_LITERAL
-%token <string> ID
+%token <string> ID STRING_LITERAL
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token RETURN INT
+%token RETURN INT STRING
 
 %token EOF
 
@@ -38,6 +38,7 @@ formal_list:
 
 typ:
       INT  { Int }
+    | STRING { String }
    /*
     | BOOL { Bool }
     | VOID { Void }
@@ -61,7 +62,9 @@ stmt:
 	| RETURN SEMI	   { Return Noexpr }
 
 expr:
-	  INT_LITERAL { Literal($1) }
+	  INT_LITERAL { Int_Literal($1) }
+	| STRING_LITERAL { String_Literal($1) }
+	| ID	      { Id($1) }
 	| ID LPAREN actuals_opt RPAREN { Call($1, $3) }
 
 actuals_opt:

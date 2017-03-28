@@ -1,13 +1,15 @@
-type typ = Int | Bool | Void 
+type typ = Int | String | Bool | Void 
 
 type bind = typ * string
 
 
 type expr =
-	  Literal of int
+	  Int_Literal of int
+	| String_Literal of string
 	| Id of string
 	| Call of string * expr list
 	| Noexpr
+
 
 type stmt =
 	  Block of stmt list

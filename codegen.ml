@@ -9,13 +9,14 @@ let translate (globals, functions) =
   and i32_t  = L.i32_type  context
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
+  and ptr_t  = L.pointer_type
   and void_t = L.void_type context in
 
   let ltype_of_typ = function
       Ast.Int -> i32_t
     | Ast.Bool -> i1_t
-    | Ast.Void -> void_t in
-
+    | Ast.Void -> void_t
+    | Ast.String -> ptr_t i8_t in
 
   (* We are passing over global variables for now *)
 
@@ -87,15 +88,18 @@ let translate (globals, functions) =
  
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
-	Ast.Literal i -> L.const_int i32_t i
+	Ast.Int_Literal i -> L.const_int i32_t i
+      | Ast.String_Literal s -> L.const_string context s 
       | Ast.Noexpr -> L.const_int i32_t 0
       (* for formals lookup need Id. Need Call for 'printf' *)
       | Ast.Id s -> L.build_load (lookup s) s builder
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	        "printf" builder
-
-      (* Leaving out call for custom fucntions for now *)
+      | Ast.Call ("prints", [e]) ->
+	    let get_string = function Ast.String_Literal s -> s 
+	  | _ -> "" in let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
+		L.build_call printf_func [| s_ptr |] "printf" builder      (* Leaving out call for custom fucntions for now *)
         in
 
     (* Invoke "f builder" if the current block doesn't already

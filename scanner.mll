@@ -10,7 +10,12 @@ rule token = parse
 	| ','					{ COMMA }
 	| ';'					{ SEMI }
 	| "return"				{ RETURN }
-   
+	| '"' ([^'"']* as lit) '"'		{ STRING_LITERAL(lit) }   
+	| "int"					{ INT }			
+	| [ 'a' - 'z'  'A' - 'Z' ][ 'a' - 'z'  'A' - 'Z'  '0' - '9'  '_' ]*   as lxm  { ID ( lxm ) }
+        | ['0'- '9']+				as lxm { INT_LITERAL(int_of_string lxm ) }
+	| eof					{ EOF }
+	
 	 (*
 	| '['					{ LBRACK }
 	| ']'					{ RBRACK }
@@ -46,10 +51,6 @@ rule token = parse
         | "true"					as lxm { BOOL_LITERAL(bool_of_string lxm ) }
 	| "false"				as lxm { BOOL_LITERAL(bool_of_string lxm ) }
 	*)
-	| "int"					{ INT }			
-	| [ 'a' - 'z'  'A' - 'Z' ][ 'a' - 'z'  'A' - 'Z'  '0' - '9'  '_' ]*   as lxm  { ID ( lxm ) }
-        | ['0'- '9']+				as lxm { INT_LITERAL(int_of_string lxm ) }
-	| eof					{ EOF }
 		 	 	 		
 	and comment = parse
 	| "##"					{ token lexbuf }	(* comment end *)
