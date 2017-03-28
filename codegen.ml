@@ -16,9 +16,16 @@ let translate (globals, functions) =
       Ast.Int -> i32_t
     | Ast.Bool -> i1_t
     | Ast.Void -> void_t
+    | Ast.Char -> i8_t
     | Ast.String -> ptr_t i8_t in
 
-  (* We are passing over global variables for now *)
+  (* Declare each global variable; remember its value in a map *)
+  let global_vars = 
+	let global_var m (t, n) =
+	  let init = L.const_int (ltype_of_typ t) 0
+          in StringMap.add n (L.define_global n init the_module) m in
+	    List.fold_left global_var StringMap.empty globals
+	      in
 
   (*Declare printf(), which the print built-in function will call *)
   let printf_t = L.var_arg_function_type i32_t [| L.pointer_type i8_t |] 
@@ -55,14 +62,9 @@ let translate (globals, functions) =
         let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder
           in (* llvm int to string. let's see where it's used *)
 	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
-	  in  
-(* 
-     (* Return the value for a variable or formal argument *)
-       let lookup n = try StringMap.find n local_vars
-                      with Not_found -> StringMap.find n global_vars
-       in
-*)
+	  in 
 
+ 
     let local_vars = 
       let add_formal m (t, n) p = L.set_value_name n p;
       let local = L.build_alloca (ltype_of_typ t) n builder in
@@ -82,24 +84,30 @@ let translate (globals, functions) =
         List.fold_left add_local formals fdecl.Ast.locals
         in
 
-    (* Return the value for a variable or formal argument - change to 'try with' when adding globals *)
-    let lookup n = StringMap.find n local_vars
-      in
+     (* Return the value for a variable or formal argument *)
+       let lookup n = try StringMap.find n local_vars
+                      with Not_found -> StringMap.find n global_vars
+       in
 
  
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
 	Ast.Int_Literal i -> L.const_int i32_t i
       | Ast.String_Literal s -> L.const_string context s 
+      | Ast.Char_Literal c -> L.const_int i8_t (int_of_char c)
       | Ast.Noexpr -> L.const_int i32_t 0
       (* for formals lookup need Id. Need Call for 'printf' *)
       | Ast.Id s -> L.build_load (lookup s) s builder
+      | Ast.Assign (s, e) -> let e' = expr builder e in 
+		ignore (L.build_store e' (lookup s) builder); e'
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	        "printf" builder
       | Ast.Call ("prints", [e]) ->
 	    let get_string = function Ast.String_Literal s -> s 
-	  | _ -> "" in let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
+	  	| _ -> "" 
+		in 
+		let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
 		L.build_call printf_func [| s_ptr |] "printf" builder      (* Leaving out call for custom fucntions for now *)
         in
 

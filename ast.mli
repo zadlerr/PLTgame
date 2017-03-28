@@ -1,4 +1,4 @@
-type typ = Int | String | Bool | Void 
+type typ = Int | String | Char | Bool | Void 
 
 type bind = typ * string
 
@@ -6,7 +6,9 @@ type bind = typ * string
 type expr =
 	  Int_Literal of int
 	| String_Literal of string
+	| Char_Literal of char
 	| Id of string
+	| Assign of string * expr
 	| Call of string * expr list
 	| Noexpr
 
@@ -26,9 +28,3 @@ type func_decl = {
 }
  
 type program = bind list * func_decl list
-
-(* bind list * func_decl list *)
-(*
-let string_of_typ = function
-    Int  -> "int"
-*)

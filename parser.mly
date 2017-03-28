@@ -1,9 +1,11 @@
 %{ open Ast %}
 
-%token <int> INT_LITERAL
-%token <string> ID STRING_LITERAL
+%token ASSIGN
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token RETURN INT STRING
+%token RETURN INT STRING CHAR
+%token <char> CHAR_LIT
+%token <int> INT_LIT
+%token <string> ID STRING_LIT
 
 %token EOF
 
@@ -17,6 +19,7 @@ program:
 
 decls: 
 	{ [], [] }
+	| decls vdecl { ($2 :: fst $1), snd $1 }
 	| decls fdecl { fst $1, ($2 :: snd $1) }
 		
 fdecl:
@@ -37,8 +40,9 @@ formal_list:
     | formal_list COMMA typ ID { ($3, $4) :: $1 }
 
 typ:
-      INT  { Int }
+      INT    { Int }
     | STRING { String }
+    | CHAR   { Char }
    /*
     | BOOL { Bool }
     | VOID { Void }
@@ -62,10 +66,12 @@ stmt:
 	| RETURN SEMI	   { Return Noexpr }
 
 expr:
-	  INT_LITERAL { Int_Literal($1) }
-	| STRING_LITERAL { String_Literal($1) }
-	| ID	      { Id($1) }
-	| ID LPAREN actuals_opt RPAREN { Call($1, $3) }
+	  INT_LIT                      { Int_Literal($1) }
+	| STRING_LIT                   { String_Literal($1) }
+	| CHAR_LIT		       { Char_Literal($1) }
+	| ID	                       { Id($1) }
+	| ID ASSIGN expr	       { Assign($1, $3) }
+	| ID LPAREN actuals_opt RPAREN { Call($1, $3) } /* function call */
 
 actuals_opt:
 	  /* nothing */ { [] }
