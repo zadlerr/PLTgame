@@ -29,10 +29,4 @@ let check (globals, functions) =
 
   List.iter (check_not_void (fun n -> "illegal void global " ^ n)) globals;
 
-  report_duplicate (fun n -> "duplicate global " ^ n) (List.map snd globals);
-
-  (**** Checking Functions ****)
-  (* check for "primitive (built in functions) *)
-  (*if List.mem "print" (List.map*)
-   
-
+  report_duplicates (fun n -> "duplicate global " ^ n) (List.map snd globals);
