@@ -13,6 +13,17 @@ rule token = parse
 	| ','				{ COMMA }
 	| ';'				{ SEMI }
 	| '='				{ ASSIGN }
+	| '+'				{ PLUS }
+	| '-'				{ MINUS }
+	| '*'				{ TIMES }
+	| '/'				{ DIVIDE }
+	| '%'				{ MOD }
+	| '<'				{ LT }
+   	| "<="                		{ LEQ }
+   	| '>'                  		{ GT }
+   	| ">="                 		{ GEQ }
+   	| "=="                 	 	{ EQ }
+   	| "!="                 	 	{ NEQ }
 	| "return"			{ RETURN }
 	| "int"				{ INT }			
 	| "string"			{ STRING }
@@ -27,17 +38,6 @@ rule token = parse
 	| '['					{ LBRACK }
 	| ']'					{ RBRACK }
 	| '.'					{ ACCESS }		(* operators *)
-	| '*'					{ TIMES }
-	| '/'					{ DIVIDE }
-	| '%'					{ MOD }
-	| '+'					{ PLUS }
-	| '-'					{ MINUS }
-	| '<'					{ LT }
-   	| "<="                  { LEQ }
-   	| '>'                   { GT }
-   	| ">="                  { GEQ }
-   	| "=="                  { EQ }
-   	| "!="                  { NEQ }
    	| '&'					{ AND }
 	| '|'					{ OR }
 	| '!'					{ NOT }

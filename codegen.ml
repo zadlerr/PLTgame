@@ -100,6 +100,22 @@ let translate (globals, functions) =
       | Ast.Id s -> L.build_load (lookup s) s builder
       | Ast.Assign (s, e) -> let e' = expr builder e in 
 		ignore (L.build_store e' (lookup s) builder); e'
+      | Ast.Binop(e1, op, e2) ->
+		let e1' = expr builder e1 and e2' = expr builder e2 in
+		(match op with 
+		    Ast.Add  -> L.build_add
+		  | Ast.Sub  -> L.build_sub
+		  | Ast.Mult -> L.build_mul
+		  | Ast.Div  -> L.build_sdiv
+		  | Ast.Mod  -> L.build_srem
+		  | Ast.Equal-> L.build_icmp L.Icmp.Eq
+		  | Ast.Neq  -> L.build_icmp L.Icmp.Ne
+		  | Ast.Lessthan  -> L.build_icmp L.Icmp.Slt
+		  | Ast.Greaterthan -> L.build_icmp L.Icmp.Sgt
+		  | Ast.Leq -> L.build_icmp L.Icmp.Sle
+		  | Ast.Geq -> L.build_icmp L.Icmp.Sge
+
+		) e1' e2' "tmp" builder
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	        "printf" builder

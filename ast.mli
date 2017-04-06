@@ -1,3 +1,5 @@
+type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Lessthan | Greaterthan | Leq | Geq
+
 type typ = Int | String | Char | Bool | Void 
 
 type bind = typ * string
@@ -8,6 +10,7 @@ type expr =
 	| String_Literal of string
 	| Char_Literal of char
 	| Id of string
+	| Binop of expr * op * expr
 	| Assign of string * expr
 	| Call of string * expr list
 	| Noexpr
