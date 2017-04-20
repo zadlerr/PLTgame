@@ -63,9 +63,9 @@ let translate (globals, functions) =
         let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder
           in 
 	let str_format_str = L.build_global_stringptr "%s\n" "fmt" builder in(* llvm int to string. let's see where it's used *)
-(*	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
-	  in 
-*)
+	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
+        in 
+
  
     let local_vars = 
       let add_formal m (t, n) p = L.set_value_name n p;
@@ -90,7 +90,26 @@ let translate (globals, functions) =
        let lookup n = try StringMap.find n local_vars
                       with Not_found -> StringMap.find n global_vars
        in
-
+     let type_of_val = function 
+             "i32*" -> int_format_str (*int*)
+           | "i8**" -> str_format_str (*string*)
+           | "i8*" -> char_format_str (*char*)
+           | "i1*" -> int_format_str (*bool*)
+           | _ -> str_format_str
+         in 
+     
+         let check_print_input = function
+             Ast.Int_Literal e -> int_format_str
+           | Ast.String_Lit e -> str_format_str 
+           | Ast.Char_Literal c -> char_format_str 
+           | Ast.Binop (e1, op, e2) -> int_format_str 
+           | Ast.BoolLit b -> int_format_str 
+           | Ast.Id s -> type_of_val(L.string_of_lltype(L.type_of (lookup s)))
+           | Ast.Assign (s, e) -> int_format_str
+           | Ast.Noexpr -> int_format_str
+           | Ast.Unop (op, e) -> int_format_str
+           | Ast.Call (s, actuals) -> int_format_str
+         in 
  
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
@@ -127,15 +146,17 @@ let translate (globals, functions) =
 	    Ast.Neg     -> L.build_neg
           | Ast.Not     -> L.build_not) e' "tmp" builder
       | Ast.Call ("print", [e]) ->
-    	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
+    	  L.build_call printf_func [| check_print_input e ; (expr builder e) |]
 	        "printf" builder
+(*
       | Ast.Call ("prints", [e]) ->
 	    let get_string = function Ast.String_Lit s -> s 
 	  	| _ -> "" 
 		in 
 		let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
-		L.build_call printf_func [| s_ptr |] "printf" builder      (* Leaving out call for custom fucntions for now *)
-      | Ast.Call (f, act) ->
+		L.build_call printf_func [| s_ptr |] "printf" builder
+*)           
+	| Ast.Call (f, act) ->
          let (fdef, fdecl) = StringMap.find f function_decls in
 	 let actuals = List.rev (List.map (expr builder) (List.rev act)) in
 	 let result = (match fdecl.Ast.typ with Ast.Void -> ""
