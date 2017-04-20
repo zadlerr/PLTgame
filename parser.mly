@@ -2,7 +2,7 @@
 
 %token ASSIGN
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token RETURN INT STRING CHAR 
+%token RETURN IF ELSE INT STRING CHAR 
 %token PLUS MINUS TIMES DIVIDE MOD 
 %token LT LEQ GT GEQ EQ NEQ
 %token <char> CHAR_LIT
@@ -11,8 +11,14 @@
 
 %token EOF
 
+%nonassoc NOELSE
+%nonassoc ELSE
+%right ASSIGN
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
+%left EQ NEQ LT GT LEQ GEQ
+/*%left AND OR NOT NEG
+*/
 
 %start program
 %type <Ast.program> program
@@ -69,6 +75,8 @@ stmt:
 	  expr SEMI { Expr $1 }
 	| RETURN expr SEMI { Return $2 }
 	| RETURN SEMI	   { Return Noexpr }
+	| IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) } /* elseless if */
+	| IF LPAREN expr RPAREN stmt ELSE stmt { If($3,$5,$7) }
 
 expr:
 	  INT_LIT                      { Int_Literal($1) }

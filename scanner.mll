@@ -24,6 +24,8 @@ rule token = parse
    	| ">="                 		{ GEQ }
    	| "=="                 	 	{ EQ }
    	| "!="                 	 	{ NEQ }
+	| "if"				{ IF }
+	| "else"			{ ELSE }
 	| "return"			{ RETURN }
 	| "int"				{ INT }			
 	| "string"			{ STRING }
@@ -48,8 +50,6 @@ rule token = parse
 	| "start"				{ START }
 	| "npc"					{ NPC }
 	| "end"					{ END }
-	| "if"					{ IF }
-	| "else"				{ ELSE }
 	| "while"				{ WHILE }
 	| "boolean"				{ BOOLEAN }
 	| "void"				{ VOID }

@@ -142,6 +142,19 @@ let translate (globals, functions) =
       | Ast.Return e -> ignore (match fdecl.Ast.typ with
     	    Ast.Void -> L.build_ret_void builder
           | _ -> L.build_ret (expr builder e) builder); builder
+      | Ast.If (predicate, then_stmt, else_stmt) ->
+	let bool_val = expr builder predicate in
+	  let merge_bb = L.append_block context "merge" the_function in
+	   let then_bb = L.append_block context "then" the_function in
+	     add_terminal (stmt (L.builder_at_end context then_bb) then_stmt)
+	       (L.build_br merge_bb);
+
+	   let else_bb = L.append_block context "else" the_function in
+	     add_terminal (stmt (L.builder_at_end context else_bb) else_stmt)
+	       (L.build_br merge_bb);
+	
+	   ignore (L.build_cond_br bool_val then_bb else_bb builder);
+	   L.builder_at_end context merge_bb
 	
     in
 

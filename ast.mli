@@ -11,6 +11,7 @@ type expr =
 	| Char_Literal of char
 	| Id of string
 	| Binop of expr * op * expr
+	(* Unop *)
 	| Assign of string * expr
 	| Call of string * expr list
 	| Noexpr
@@ -19,6 +20,8 @@ type expr =
 type stmt =
 	  Block of stmt list
 	| Expr of expr
+	| If of expr * stmt * stmt
+	(* While *)
 	| Return of expr  
 
 
