@@ -1,11 +1,10 @@
 Venture TODO list
 
 James:
-Implement all primitives (and test)
 Unary operators (NOT NEG)
-expr conjunctors (AND OR) 
 Custom Functions
 Structs
+(remember to test void)
 
 Ben:
 Working testing suite
