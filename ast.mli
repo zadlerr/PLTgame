@@ -21,7 +21,7 @@ type stmt =
 	  Block of stmt list
 	| Expr of expr
 	| If of expr * stmt * stmt
-	(* While *)
+	| While of expr * stmt
 	| Return of expr  
 
 

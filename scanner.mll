@@ -26,6 +26,7 @@ rule token = parse
    	| "!="                 	 	{ NEQ }
 	| "if"				{ IF }
 	| "else"			{ ELSE }
+	| "while"			{ WHILE }
 	| "return"			{ RETURN }
 	| "int"				{ INT }			
 	| "string"			{ STRING }
@@ -50,7 +51,6 @@ rule token = parse
 	| "start"				{ START }
 	| "npc"					{ NPC }
 	| "end"					{ END }
-	| "while"				{ WHILE }
 	| "boolean"				{ BOOLEAN }
 	| "void"				{ VOID }
         | "true"					as lxm { BOOL_LITERAL(bool_of_string lxm ) }

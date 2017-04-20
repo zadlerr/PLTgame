@@ -2,7 +2,8 @@
 
 %token ASSIGN
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token RETURN IF ELSE INT STRING CHAR 
+%token RETURN INT STRING CHAR 
+%token IF ELSE WHILE
 %token PLUS MINUS TIMES DIVIDE MOD 
 %token LT LEQ GT GEQ EQ NEQ
 %token <char> CHAR_LIT
@@ -75,8 +76,10 @@ stmt:
 	  expr SEMI { Expr $1 }
 	| RETURN expr SEMI { Return $2 }
 	| RETURN SEMI	   { Return Noexpr }
+	| LBRACE stmt_list RBRACE { Block(List.rev $2) }
 	| IF LPAREN expr RPAREN stmt %prec NOELSE { If($3, $5, Block([])) } /* elseless if */
 	| IF LPAREN expr RPAREN stmt ELSE stmt { If($3,$5,$7) }
+	| WHILE LPAREN expr RPAREN stmt { While($3, $5) }
 
 expr:
 	  INT_LIT                      { Int_Literal($1) }
