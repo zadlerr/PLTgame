@@ -133,7 +133,14 @@ let translate (globals, functions) =
 		in 
 		let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
 		L.build_call printf_func [| s_ptr |] "printf" builder      (* Leaving out call for custom fucntions for now *)
-        in
+      | Ast.Call (f, act) ->
+         let (fdef, fdecl) = StringMap.find f function_decls in
+	 let actuals = List.rev (List.map (expr builder) (List.rev act)) in
+	 let result = (match fdecl.Ast.typ with Ast.Void -> ""
+                                            | _ -> f ^ "_result") in
+         L.build_call fdef (Array.of_list actuals) result builder
+        
+	in
 
     (* Invoke "f builder" if the current block doesn't already
        have a terminal (e.g., a branch). *)
