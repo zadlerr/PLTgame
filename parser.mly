@@ -6,7 +6,7 @@
 %token INT STRING CHAR BOOL VOID
 %token IF ELSE WHILE
 %token PLUS MINUS TIMES DIVIDE MOD 
-%token LT LEQ GT GEQ EQ NEQ TRUE FALSE
+%token LT LEQ GT GEQ EQ NEQ TRUE FALSE NOT
 %token AND OR
 %token <char> CHAR_LIT
 %token <int> INT_LIT
@@ -16,11 +16,11 @@
 
 %nonassoc NOELSE
 %nonassoc ELSE
-%right ASSIGN
+%right ASSIGN NOT NEG
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
 %left EQ NEQ LT GT LEQ GEQ
-%left AND OR /* NOT NEG */
+%left AND OR 
 
 %start program
 %type <Ast.program> program
@@ -102,6 +102,9 @@ expr:
 	| expr NEQ expr		       { Binop($1, Neq, $3) }
 	| expr AND expr		       { Binop($1, And, $3) }
 	| expr OR expr		       { Binop($1, Or, $3) }
+	| MINUS expr %prec NEG 	       { Unop(Neg, $2) }
+	| NOT expr		       { Unop(Not, $2) }
+	| LPAREN expr RPAREN { $2 }
 
 actuals_opt:
 	  /* nothing */ { [] }

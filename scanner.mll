@@ -24,8 +24,9 @@ rule token = parse
    	| ">="                 		{ GEQ }
    	| "=="                 	 	{ EQ }
    	| "!="                 	 	{ NEQ }
-   	| '&'				{ AND }
-	| '|'				{ OR }
+   	| "&&"				{ AND }
+	| "||"				{ OR }
+	| '!'				{ NOT }
         | "true"			{ TRUE }
 	| "false"			{ FALSE }
 	| "if"				{ IF }
@@ -52,7 +53,6 @@ rule token = parse
 	| '['					{ LBRACK }
 	| ']'					{ RBRACK }
 	| '.'					{ ACCESS }		(* operators *)
-	| '!'					{ NOT }
 	| "fun"					{ FUN }			(* keywords *)
 	| "events"				{ EVENTS }
 	| "room"				{ ROOM }

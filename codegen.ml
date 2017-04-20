@@ -119,6 +119,11 @@ let translate (globals, functions) =
 		  | Ast.Geq -> L.build_icmp L.Icmp.Sge
 
 		) e1' e2' "tmp" builder
+      | Ast.Unop(op, e) ->
+	  let e' = expr builder e in
+	  (match op with
+	    Ast.Neg     -> L.build_neg
+          | Ast.Not     -> L.build_not) e' "tmp" builder
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	        "printf" builder

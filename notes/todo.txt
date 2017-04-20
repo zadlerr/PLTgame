@@ -1,7 +1,6 @@
 Venture TODO list
 
 James:
-Unary operators (NOT NEG)
 Custom Functions
 Structs
 (remember to test void)

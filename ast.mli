@@ -1,7 +1,6 @@
 type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Lessthan | Greaterthan | Leq | Geq | And | Or
 
-(* type uop = Neg | Not
-*)
+ type uop = Neg | Not
 
 type typ = Int | String | Char | Bool | Void 
 
@@ -14,7 +13,7 @@ type expr =
 	| BoolLit of bool
 	| Id of string
 	| Binop of expr * op * expr
-	(* Unop *)
+	| Unop of uop * expr
 	| Assign of string * expr
 	| Call of string * expr list
 	| Noexpr

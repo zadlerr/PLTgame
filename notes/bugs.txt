@@ -1,0 +1,3 @@
+Known bugs and issues:
+No nested comments
+starting an expression with '-' ignores the minus
