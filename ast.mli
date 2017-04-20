@@ -1,14 +1,17 @@
-type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Lessthan | Greaterthan | Leq | Geq
+type op = Add | Sub | Mult | Div | Mod | Equal | Neq | Lessthan | Greaterthan | Leq | Geq | And | Or
+
+(* type uop = Neg | Not
+*)
 
 type typ = Int | String | Char | Bool | Void 
 
 type bind = typ * string
 
-
 type expr =
 	  Int_Literal of int
 	| String_Literal of string
 	| Char_Literal of char
+	| BoolLit of bool
 	| Id of string
 	| Binop of expr * op * expr
 	(* Unop *)

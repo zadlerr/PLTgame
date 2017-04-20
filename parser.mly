@@ -2,10 +2,12 @@
 
 %token ASSIGN
 %token LPAREN RPAREN LBRACE RBRACE SEMI COMMA
-%token RETURN INT STRING CHAR 
+%token RETURN
+%token INT STRING CHAR BOOL VOID
 %token IF ELSE WHILE
 %token PLUS MINUS TIMES DIVIDE MOD 
-%token LT LEQ GT GEQ EQ NEQ
+%token LT LEQ GT GEQ EQ NEQ TRUE FALSE
+%token AND OR
 %token <char> CHAR_LIT
 %token <int> INT_LIT
 %token <string> ID STRING_LIT
@@ -18,8 +20,7 @@
 %left PLUS MINUS
 %left TIMES DIVIDE MOD
 %left EQ NEQ LT GT LEQ GEQ
-/*%left AND OR NOT NEG
-*/
+%left AND OR /* NOT NEG */
 
 %start program
 %type <Ast.program> program
@@ -55,10 +56,8 @@ typ:
       INT    { Int }
     | STRING { String }
     | CHAR   { Char }
-   /*
     | BOOL { Bool }
     | VOID { Void }
-   */
 
 vdecl_list: 
     /* nothing */ { [] }
@@ -85,6 +84,8 @@ expr:
 	  INT_LIT                      { Int_Literal($1) }
 	| STRING_LIT                   { String_Literal($1) }
 	| CHAR_LIT		       { Char_Literal($1) }
+	| TRUE			       { BoolLit(true) }
+	| FALSE			       { BoolLit(false) }
 	| ID	                       { Id($1) }
 	| ID ASSIGN expr	       { Assign($1, $3) }
 	| ID LPAREN actuals_opt RPAREN { Call($1, $3) } /* function call */
@@ -99,7 +100,8 @@ expr:
 	| expr GEQ expr		       { Binop($1, Geq, $3) }
 	| expr EQ expr		       { Binop($1, Equal, $3) }
 	| expr NEQ expr		       { Binop($1, Neq, $3) }
-
+	| expr AND expr		       { Binop($1, And, $3) }
+	| expr OR expr		       { Binop($1, Or, $3) }
 
 actuals_opt:
 	  /* nothing */ { [] }

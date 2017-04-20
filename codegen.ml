@@ -95,6 +95,7 @@ let translate (globals, functions) =
 	Ast.Int_Literal i -> L.const_int i32_t i
       | Ast.String_Literal s -> L.const_string context s 
       | Ast.Char_Literal c -> L.const_int i8_t (int_of_char c)
+      | Ast.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | Ast.Noexpr -> L.const_int i32_t 0
       (* for formals lookup need Id. Need Call for 'printf' *)
       | Ast.Id s -> L.build_load (lookup s) s builder
@@ -108,6 +109,8 @@ let translate (globals, functions) =
 		  | Ast.Mult -> L.build_mul
 		  | Ast.Div  -> L.build_sdiv
 		  | Ast.Mod  -> L.build_srem
+	  	  | Ast.And     -> L.build_and
+	  	  | Ast.Or      -> L.build_or
 		  | Ast.Equal-> L.build_icmp L.Icmp.Eq
 		  | Ast.Neq  -> L.build_icmp L.Icmp.Ne
 		  | Ast.Lessthan  -> L.build_icmp L.Icmp.Slt
