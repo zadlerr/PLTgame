@@ -10,14 +10,15 @@ let translate (globals, functions) =
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
   and ptr_t  = L.pointer_type
-  and void_t = L.void_type context in
+  and void_t = L.void_type context 
+  and str_t  = L.pointer_type (L.i8_type context) in
 
   let ltype_of_typ = function
       Ast.Int -> i32_t
     | Ast.Bool -> i1_t
     | Ast.Void -> void_t
     | Ast.Char -> i8_t
-    | Ast.String -> ptr_t i8_t in
+    | Ast.String -> str_t in
 
   (* Declare each global variable; remember its value in a map *)
   let global_vars = 
@@ -60,7 +61,8 @@ let translate (globals, functions) =
       let builder = L.builder_at_end context (L.entry_block the_function) 
         in (* builds at end of basic block. A basic block is simply a container of instructions that execute sequentially*)
         let int_format_str = L.build_global_stringptr "%d\n" "fmt" builder
-          in (* llvm int to string. let's see where it's used *)
+          in 
+	let str_format_str = L.build_global_stringptr "%s\n" "fmt" builder in(* llvm int to string. let's see where it's used *)
 (*	let char_format_str = L.build_global_stringptr "%c" "fmt" builder
 	  in 
 *)
@@ -93,7 +95,7 @@ let translate (globals, functions) =
     (* Construct code for an expression; return its value *)
     let rec expr builder = function
 	Ast.Int_Literal i -> L.const_int i32_t i
-      | Ast.String_Literal s -> L.const_string context s 
+      | Ast.String_Lit s -> L.build_global_stringptr s "str" builder 
       | Ast.Char_Literal c -> L.const_int i8_t (int_of_char c)
       | Ast.BoolLit b -> L.const_int i1_t (if b then 1 else 0)
       | Ast.Noexpr -> L.const_int i32_t 0
@@ -128,7 +130,7 @@ let translate (globals, functions) =
     	  L.build_call printf_func [| int_format_str ; (expr builder e) |]
 	        "printf" builder
       | Ast.Call ("prints", [e]) ->
-	    let get_string = function Ast.String_Literal s -> s 
+	    let get_string = function Ast.String_Lit s -> s 
 	  	| _ -> "" 
 		in 
 		let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 

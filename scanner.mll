@@ -1,7 +1,15 @@
-{ open Parser }
+{ open Parser 
+(*let unescape s = Scanf.sscanf ("\"" ^ s ^ "\"") "%S!" (fun x -> x)
+*)}
 
-
+let alpha = ['a'-'z' 'A'-'Z']
+let digit = ['0' - '9']
+let escape = '\\' ['\\' ''' '"' 'n' 'r' 't']
 let ascii = ([' '-'!' '#'-'[' ']'-'~'])
+let int = digit+
+let char = '''(ascii | digit ) '''
+let string = '"' ( (ascii | escape)* as s) '"'
+let id = alpha(alpha | digit | '_')*
 
 rule token = parse
 	[ ' ' '\t' '\r' '\n'] 	{ token lexbuf }(* whitespace *)
@@ -38,12 +46,11 @@ rule token = parse
 	| "char"			{ CHAR }
 	| "bool"			{ BOOL }
 	| "void"			{ VOID }
-	| ['a'-'z' 'A'-'Z']['a'-'z' 'A'-'Z' '0'-'9'  '_']* as lxm  { ID(lxm) }
-        | ['0'-'9']+			as lxm { INT_LIT(int_of_string lxm ) }
-	| '"' ([^'"']* as lit) '"'	{ STRING_LIT(lit) }   
-	| '''(ascii | ['0'-'9']) ''' as lxm 			{ CHAR_LIT( String.get lxm 1) }
+        | int    	as lxm { INT_LIT(int_of_string lxm ) }
+	| string	{ STRING_LITERAL(s) }   
+	| char          as lxm 	{ CHAR_LIT( String.get lxm 1) }
+	| id as lxm { ID(lxm) }	
 	| eof					{ EOF }
-	
 		 	 	 		
 	and comment = parse
 	| "##"					{ token lexbuf }	(* comment end *)

@@ -10,7 +10,8 @@
 %token AND OR
 %token <char> CHAR_LIT
 %token <int> INT_LIT
-%token <string> ID STRING_LIT
+%token <string> ID 
+%token <string> STRING_LITERAL
 
 %token EOF
 
@@ -52,7 +53,7 @@ formal_list:
       typ ID 	{ [($1, $2)] }
     | formal_list COMMA typ ID { ($3, $4) :: $1 }
 
-typ:
+typ: /* Datatype - see MAZE */
       INT    { Int }
     | STRING { String }
     | CHAR   { Char }
@@ -82,7 +83,7 @@ stmt:
 
 expr:
 	  INT_LIT                      { Int_Literal($1) }
-	| STRING_LIT                   { String_Literal($1) }
+	| STRING_LITERAL               { String_Lit($1) }
 	| CHAR_LIT		       { Char_Literal($1) }
 	| TRUE			       { BoolLit(true) }
 	| FALSE			       { BoolLit(false) }

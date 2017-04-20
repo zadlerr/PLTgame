@@ -8,7 +8,7 @@ type bind = typ * string
 
 type expr =
 	  Int_Literal of int
-	| String_Literal of string
+	| String_Lit of string
 	| Char_Literal of char
 	| BoolLit of bool
 	| Id of string
