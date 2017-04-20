@@ -1,20 +1,21 @@
-We need:
+Venture TODO list
 
-driver program to create executable
+James:
+Implement all primitives (and test)
+Unary operators (NOT NEG)
+expr conjunctors (AND OR) 
+Custom Functions
+Structs
 
-we need working codegen file
+Ben:
+Working testing suite
 
-we need to put the makefile in proper order
+Naina:
+Working string assignment
+Working string functions
 
-we need test suite (Ben) ls
+Zach:
+Semantic Checker
 
-
-For our hello world:
-
-we want
-
-1) main function
-2) built in print function
-3) user defined function
-4) all of the primitive data types with print options for them
-5) 
+Next Steps:
+IO
