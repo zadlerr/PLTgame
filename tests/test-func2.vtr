@@ -1,0 +1,11 @@
+int printem(int x, int y)
+{ 
+  print(x);
+  print(y);
+ }
+
+int main()
+{
+  printem(4, 8);
+  return 0;
+}
