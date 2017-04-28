@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 char* input( ) {
 
-	char * str;
+	char *str = malloc(100);
 	
 	fgets(str, 100, stdin);
 

@@ -34,8 +34,20 @@ let translate (globals, functions) =
     let printf_func = L.declare_function "printf" printf_t the_module 
       in
 
-  (* Ignoring printbig for now too *)
+  (*Declare scompare for strings from external c file*)
+  let scompare_t = L.function_type i32_t [| i32_t |] in
+  let scompare_func = L.declare_function "scompare" scompare_t the_module in
   
+  let input_t = L.function_type str_t [| |] in
+  let input_func = L.declare_function "input" input_t the_module in
+
+  let lib_t = L.function_type i32_t [| |] in
+  let lib_func = L.declare_function "lib" lib_t the_module in
+
+
+  (* Ignoring printbig for now too *)
+  let printbig2_t = L.function_type i32_t [| i32_t |] in
+  let printbig2_func = L.declare_function "printbig2" printbig2_t the_module in
 
   (* Define each function (arguments and return type ) so we can call it  *)
   let function_decls = 
@@ -148,6 +160,15 @@ let translate (globals, functions) =
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| check_print_input e ; (expr builder e) |]
 	        "printf" builder
+      | Ast.Call("scompare", [e]) ->
+          L.build_call scompare_func [| (expr builder e) |] "scompare" builder
+      | Ast.Call("input", []) ->
+          L.build_call input_func [| |] "input" builder
+      | Ast.Call("lib", []) ->
+          L.build_call lib_func [| |] "lib" builder
+      | Ast.Call ("printbig2", [e]) ->
+          L.build_call printbig2_func [| (expr builder e) |] "printbig2" builder
+
 (*
       | Ast.Call ("prints", [e]) ->
 	    let get_string = function Ast.String_Lit s -> s 

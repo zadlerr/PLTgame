@@ -1,6 +1,5 @@
-int main(){ 
-	int bar;
-	string foo;
-	print(2); 
-	prints("hello world");
-	return 0; }
+int main(){
+        string foo;
+        foo = "hello world";
+        print(foo);
+        return 0; }
