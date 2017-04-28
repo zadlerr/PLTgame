@@ -1,0 +1,8 @@
+int main(){
+        string foo;
+	string bar;
+	foo = "input?";
+        print(foo);
+	bar = input();
+        print(bar);
+	return 0; }

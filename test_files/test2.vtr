@@ -1,0 +1,8 @@
+int main(){
+        string foo;
+	string bar;
+        foo = "hello world";
+	bar = "hello";
+        print(100);
+        scompare(foo, bar);
+        return 0; }
