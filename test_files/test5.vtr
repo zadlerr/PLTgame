@@ -2,19 +2,21 @@ int main(){
         string foo;
 	string bar;
 	int x;
-	int y;
 
 	print("TEST 5");
 
         foo = "hello";
 	bar = "hello";
-        print("checkpoint");
 
-        x = scompare(foo, bar);
-	y = scompare(foo, "hello world");
-
+        print("Should print 0:");
+	x = scompare(foo, bar);
 	print(x);
-	print(y);
+	print("Should print -1:");
+	x = scompare(foo, "hello world");
+	print(x);
+	print("Should print 0");
+	x = scompare(foo, "HELLO");
+	print(x);
 
         return 0;
 }
