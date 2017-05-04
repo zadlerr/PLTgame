@@ -1,0 +1,12 @@
+
+int main(){
+	bool tmp;
+	tmp = true;
+	while (tmp){
+		print("works");
+		tmp = false;
+	}
+
+	return 0;
+}
+	
