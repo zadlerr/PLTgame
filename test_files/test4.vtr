@@ -1,5 +1,6 @@
 int main() {
 	bool x;
+	print("TEST 4");
 	x = true;
 	while(x == true){
 	  print("2");

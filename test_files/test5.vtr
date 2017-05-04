@@ -4,6 +4,8 @@ int main(){
 	int x;
 	int y;
 
+	print("TEST 5");
+
         foo = "hello";
 	bar = "hello";
         print("checkpoint");

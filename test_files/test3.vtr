@@ -1,6 +1,9 @@
 int main(){
-        string foo;
+	string foo;
 	string bar;
+	
+	print("TEST 3");
+	
 	foo = "input?";
         print(foo);
 	bar = input();

@@ -2,6 +2,8 @@ int main(){
 	string bar;
 	int x;
 
+	print("TEST 2");
+
 	bar = "hello";
         print(100);
 
