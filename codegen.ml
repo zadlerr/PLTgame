@@ -35,10 +35,10 @@ let translate (globals, functions) =
       in
 
   (*Declare scompare for strings from external c file*)
-  (*let scompare_formals = [(Ast.String, "s1"); (Ast.String, "s2")] in
-  let formal_types = Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) scompare_formals) in
-  let scompare_t = L.function_type i32_t [| L.pointer_type str_t |] in
-  let scompare_func = L.declare_function "scompare" scompare_t the_module in*)
+  let scompare_formals = [(Ast.String, "s1"); (Ast.String, "s2")] in
+  let sformal_types = Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) scompare_formals) in
+  let scompare_t = L.function_type i32_t sformal_types in
+  let scompare_func = L.declare_function "scompare" scompare_t the_module in
 
   let intcompare_t = L.function_type i32_t [| L.pointer_type i8_t|] in
   let intcompare_func = L.declare_function "intcompare" intcompare_t the_module in
@@ -160,22 +160,13 @@ let translate (globals, functions) =
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| check_print_input e ; (expr builder e) |]
 	        "printf" builder
-      (*| Ast.Call("scompare", [e]) ->
-          L.build_call scompare_func [| (expr builder e) ; (expr builder e) |] "scompare" builder
-      *)
-	| Ast.Call("intcompare", [e]) ->
+      | Ast.Call("scompare", [e1; e2]) ->
+          L.build_call scompare_func [| (expr builder e1) ; (expr builder e2) |] "scompare" builder
+      | Ast.Call("intcompare", [e]) ->
           L.build_call intcompare_func [| (expr builder e) |] "intcompare" builder 
-	| Ast.Call("input", []) ->
+      | Ast.Call("input", []) ->
           L.build_call input_func [| |] "input" builder
 
-(*
-      | Ast.Call ("prints", [e]) ->
-	    let get_string = function Ast.String_Lit s -> s 
-	  	| _ -> "" 
-		in 
-		let s_ptr = L.build_global_stringptr ((get_string e) ^ "\n") ".str" builder in 
-		L.build_call printf_func [| s_ptr |] "printf" builder
-*)           
 	| Ast.Call (f, act) ->
          let (fdef, fdecl) = StringMap.find f function_decls in
 	 let actuals = List.rev (List.map (expr builder) (List.rev act)) in

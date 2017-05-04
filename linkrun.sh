@@ -13,4 +13,7 @@ llc test3.ll > test3.s
 cc -o test3.exe test3.s input.o scompare.o
 ./test3.exe
 
-
+./venture.native < test_files/test5.vtr > test5.ll
+llc test5.ll > test5.s
+cc -o test5.exe test5.s input.o scompare.o
+./test5.exe
