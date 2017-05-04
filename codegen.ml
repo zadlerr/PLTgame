@@ -35,8 +35,13 @@ let translate (globals, functions) =
       in
 
   (*Declare scompare for strings from external c file*)
-  let scompare_t = L.function_type i32_t [| i32_t |] in
-  let scompare_func = L.declare_function "scompare" scompare_t the_module in
+  (*let scompare_formals = [(Ast.String, "s1"); (Ast.String, "s2")] in
+  let formal_types = Array.of_list (List.map (fun (t,_) -> ltype_of_typ t) scompare_formals) in
+  let scompare_t = L.function_type i32_t [| L.pointer_type str_t |] in
+  let scompare_func = L.declare_function "scompare" scompare_t the_module in*)
+
+  let intcompare_t = L.function_type i32_t [| L.pointer_type i8_t|] in
+  let intcompare_func = L.declare_function "intcompare" intcompare_t the_module in
   
   let input_t = L.function_type str_t [| |] in
   let input_func = L.declare_function "input" input_t the_module in
@@ -155,9 +160,12 @@ let translate (globals, functions) =
       | Ast.Call ("print", [e]) ->
     	  L.build_call printf_func [| check_print_input e ; (expr builder e) |]
 	        "printf" builder
-      | Ast.Call("scompare", [e]) ->
-          L.build_call scompare_func [| (expr builder e) |] "scompare" builder
-      | Ast.Call("input", []) ->
+      (*| Ast.Call("scompare", [e]) ->
+          L.build_call scompare_func [| (expr builder e) ; (expr builder e) |] "scompare" builder
+      *)
+	| Ast.Call("intcompare", [e]) ->
+          L.build_call intcompare_func [| (expr builder e) |] "intcompare" builder 
+	| Ast.Call("input", []) ->
           L.build_call input_func [| |] "input" builder
 
 (*

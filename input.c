@@ -10,3 +10,10 @@ char* input( ) {
 	return str;
 
 }
+
+int intcompare(char *s1) {
+
+        int retval = strcmp(s1, "hello");
+        return retval;
+
+}
