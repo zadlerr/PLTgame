@@ -1,0 +1,18 @@
+int main(){
+        string foo;
+	string bar;
+	int x;
+	int y;
+
+        foo = "hello";
+	bar = "hello";
+        print("checkpoint");
+
+        x = scompare(foo, bar);
+	y = scompare(foo, "hello world");
+
+	print(x);
+	print(y);
+
+        return 0;
+}
