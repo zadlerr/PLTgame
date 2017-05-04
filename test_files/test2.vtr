@@ -5,8 +5,8 @@ int main(){
 	bar = "hello";
         print(100);
 
-        print(scompare(bar));
-	x = scompare(bar);
+        print(intcompare(bar));
+	x = intcompare(bar);
 	print(x);
 
         return 0; 
