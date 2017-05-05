@@ -758,12 +758,11 @@ int library(bool description, bool header){
 		}
 
 		parser = true;
+		print("Congratulations! Your studies have paid off, and you now have a working parser.");
+		print("");
 		if (finished()){
 			return 0;
 		}
-		print("Congratulations! Your studies have paid off, and you now have a working parser.");
-		print("");
-		##here is where we'll check how much progress has been made so far.##
 		library(false, false);
 		return 0;						 	
 	}
