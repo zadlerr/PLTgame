@@ -94,7 +94,7 @@ Check() {
     generatedfiles="$generatedfiles ${basename}.ll ${basename}.s ${basename}.exe ${basename}.out" &&
     Run "$VENTURE" "<" $1 ">" "${basename}.ll" &&
     Run "$LLC" "${basename}.ll" ">" "${basename}.s" &&
-    Run "$CC" "-o" "${basename}.exe" "${basename}.s" "input.o" &&
+    Run "$CC" "-o" "${basename}.exe" "${basename}.s" "stdlib.o" &&
     Run "./${basename}.exe" > "${basename}.out" &&
     Compare ${basename}.out ${reffile}.out ${basename}.diff
 
@@ -165,10 +165,10 @@ LLIFail() {
 
 which "$LLI" >> $globallog || LLIFail
 
-if [ ! -f input.o ]
+if [ ! -f stdlib.o ]
 then
-    echo "Could not find input.o"
-    echo "Try \"make input.o\""
+    echo "Could not find stdlib.o"
+    echo "Try \"make stdlib.o\""
     exit 1
 fi
 

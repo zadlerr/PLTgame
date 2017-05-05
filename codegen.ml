@@ -8,7 +8,7 @@ let translate (globals, functions) =
   and i32_t  = L.i32_type  context
   and i8_t   = L.i8_type   context
   and i1_t   = L.i1_type   context
-  and ptr_t  = L.pointer_type
+  (* and ptr_t  = L.pointer_type *)
   and void_t = L.void_type context 
   and str_t  = L.pointer_type (L.i8_type context) in
 
@@ -102,16 +102,16 @@ let translate (globals, functions) =
          in 
      
          let check_print_input = function
-             Ast.Int_Literal e -> int_format_str
-           | Ast.String_Lit e -> str_format_str 
-           | Ast.Char_Literal c -> char_format_str 
-           | Ast.Binop (e1, op, e2) -> int_format_str 
-           | Ast.BoolLit b -> int_format_str 
+             Ast.Int_Literal _e -> int_format_str
+           | Ast.String_Lit _e -> str_format_str 
+           | Ast.Char_Literal _c -> char_format_str 
+           | Ast.Binop (_e1, _op, _e2) -> int_format_str 
+           | Ast.BoolLit _b -> int_format_str 
            | Ast.Id s -> type_of_val(L.string_of_lltype(L.type_of (lookup s)))
-           | Ast.Assign (s, e) -> int_format_str
+           | Ast.Assign (_s, _e) -> int_format_str
            | Ast.Noexpr -> int_format_str
-           | Ast.Unop (op, e) -> int_format_str
-           | Ast.Call (s, actuals) -> int_format_str
+           | Ast.Unop (_op, _e) -> int_format_str
+           | Ast.Call (_s, _actuals) -> int_format_str
          in 
  
     (* Construct code for an expression; return its value *)
