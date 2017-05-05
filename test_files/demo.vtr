@@ -1,0 +1,299 @@
+bool coffee;
+bool librarian;
+bool parser;
+bool scanner;
+bool ast;
+bool codegen;
+bool key;
+
+int character(){
+	string character_prompt;
+	string user_input;
+	int character_choice;
+
+	character_prompt = "Please pick your character type: [1] Manager [2] Language Guru [3] System Architect [4] Test Master.";
+
+	print(character_prompt);
+	print("");
+
+	user_input = input();
+
+	if ((scompare(user_input, "manager") == 0) || (scompare(user_input, "1") == 0)){
+		print("");
+		print("You are the team manager... good luck...");
+		print("");
+		return 0;
+	}
+	
+	if ((scompare(user_input, "language guru")==0) || (scompare(user_input, "2") == 0)){
+		print("");
+		print("You picked language guru? Well then...");
+		print("");
+		return 0;
+	}
+	
+	if ((scompare(user_input, "system architect")==0) || (scompare(user_input, "3")==0)){
+		print("");
+		print("You are the System Architect. Hopefully you enjoy headaches.");
+		print("");
+		return 0;
+	}
+
+	if ((scompare(user_input, "test master")==0) || (scompare(user_input, "4")==0)){
+		print("");
+		print("You picked test master. Probably a good call. Other people's messes can be fun to clean up too...");
+		print("");
+		return 0;
+	}
+
+	if (scompare(user_input, "<help>") == 0){
+		print("");
+		print("Enter a number 1-4");
+		print("");
+		character();
+		return 0;
+	}
+
+
+	print("");
+	print("Sorry. That is not a recognized choice.");
+	print("");
+	character();	 
+	
+	return 0;
+}
+
+
+int outdoors(bool description){
+	string text;	
+	string user_input;
+
+	print("~~~~~~~~~~~~~~~~~~~~");
+	if (description){
+		text = "You stand outside Mathematics with your team. Rays of sun peak through the leaves of the oak, showering you four brave souls. You are optimistic for the semester ahead.";
+		print(text);
+		print("");
+	}
+
+	user_input = input();
+
+	if ((scompare(user_input, "enter mathematics building")==0) || (scompare(user_input, "enter math") == 0)){
+		mathtwo(true, true);
+		return 0;
+	}
+	
+	if ((scompare(user_input, "drop out of school") == 0)){
+		print("");
+		print("The only winning move is not to play.");
+		print("");
+		return 0;
+	} 
+	
+	if (scompare(user_input, "<help>") == 0){
+		print("");
+		print("Your options:");
+		print("Enter Mathematics building");
+		print("Drop out of school");
+		print("");
+		outdoors(false);
+		return 0;
+	}
+	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Your options:");
+	print("Enter Mathematics building");
+	print("Drop out of school");
+	print("");
+	outdoors(false);	 
+	
+
+	return 0;
+}
+
+
+int mathtwo(bool description, bool header){
+	string text;
+	string user_input;
+	
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");
+		print("Math 2nd Floor");
+	}
+
+	if (description){
+		print("");
+		print("You walk through the double doors into the math building. Your teammates immediately vanish. You won't be seeing them again.");
+		print("You look around. To your left is the library, to your right is a door labeled [307]. There are stairs leading up, and stairs leading down. There is an elevator. A student walks out of the library looking... slightly off.");
+		print("");
+		print("The student walks right up to you and hands you a sheet of paper.");
+		print("");
+		print("What's this? you ask");
+		print("The student responds: Your scanner. The rest won't be so easy.");
+		print("The student runs off.");
+		print("");
+		scanner = true;
+	} 		
+
+	
+	user_input = input();
+
+	if (scompare(user_input, "throw coffee in trash") == 0){
+		coffee = false;
+		print("");
+		print("You threw away your coffee. Now you can go into the library.");
+		print("");
+		mathtwo(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "enter [307]")==0) || (scompare(user_input, "enter 307")==0)){
+		if (key){
+			print("");
+			print("haven't implemented that bit yet -James"); 
+			mathtwo(false, false);
+			return 0;
+		} else {
+			print("");
+			print("This door is locked, you'll need a key.");
+			mathtwo(false, false);
+			return 0;
+		}
+	}
+
+	if (scompare(user_input, "go upstairs") == 0){
+		print("");
+		print("haven't implemented that bit yet -James"); 
+		mathtwo(false, false);	
+		return 0;
+	}
+
+	if (scompare(user_input, "go downstairs") == 0){
+		print("");
+		print("haven't implemented that bit yet -James"); 
+		mathtwo(false, false);	
+		return 0;
+	}
+
+	if (scompare(user_input, "enter elevator") == 0){
+		elevator(true);
+		return 0;
+	}
+
+	if (scompare(user_input, "enter library") == 0){
+		library(true, true);
+		return 0;
+	}
+	
+
+
+	##help##
+	if (scompare(user_input, "<help>") == 0){
+		print("");
+		print("Your options:");
+		print("Enter library");
+		print("Enter [307]");
+		print("Go upstairs");
+		print("Go downstairs");
+		print("enter elevator");		
+		if (librarian && coffee) {
+			print("Throw coffee in trash");
+		}
+		print("");
+		mathtwo(false, false);
+		return 0;
+	}
+	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	mathtwo(false, false);	 
+	
+
+	return 0;
+}
+
+
+int elevator(bool description){
+	string user_input;
+	print("~~~~~~~~~~~~~~~~~~~~");	
+	print("no elevator yet");
+	return 0;
+}
+
+int library(bool description, bool header){
+	string user_input;
+	
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("Library");
+	}
+
+	if (description){
+		print("You walk into the library. You can see students with their heads down studying. You should do that one of these days...");
+		print("");
+	}
+
+	if (coffee){
+		print("The librarian yells at you: YOU CAN'T COME IN HERE WITH FOOD! She points to the coffee cup in your hand. You leave the library.");
+		print("");
+		librarian = true;
+		mathtwo(false, true);
+		return 0;
+	}
+
+	user_input = input();
+
+	if (scompare(user_input, "leave library") == 0){
+		mathtwo(false, true);
+		return 0;
+	}
+
+	if (scompare(user_input, "study") == 0){
+		if (parser){
+			print("");
+			print("You already did that. Go away.");
+			print("");
+			library(false, false);
+			return 0;
+		}
+
+		parser = true;
+		print("Congratulations! Your studies have paid off, and you now have a working parser.");
+		print("");
+		##here is where we'll check how much progress has been made so far.##
+		library(false, false);
+		return 0;						 	  }
+	
+	return 0;
+}
+
+int main(){
+	string intro_text;
+
+	##set up globals##
+	coffee = true;
+	librarian = false;
+	parser = false;
+	scanner = false;
+	ast = false;
+	codegen = false;
+	key = false;
+
+	print("");
+	intro_text = "Welcome to 4115 the game. The objective of this game is to build your own programming language. You will work on a team with three of your peers. In this game, you must find the pieces to build your language. Good luck!";
+	print(intro_text);
+	print("");
+
+	print("Type <help> if you're stuck.");		
+	print("");
+
+	character();
+	outdoors(true);	
+
+	return 0;
+}
+

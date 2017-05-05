@@ -36,7 +36,8 @@ char* lower(char *s) {
 
 
 int scompare(char *s1, char *s2) {
-
+	
+	s1[strcspn(s1, "\n")] = '\0';
         int retval = strcmp(lower(s1), lower(s2));
         return retval;
 
