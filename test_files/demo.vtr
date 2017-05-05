@@ -5,6 +5,47 @@ bool scanner;
 bool ast;
 bool codegen;
 bool key;
+bool dollar;
+bool vending;
+
+bool help(string user_input){
+	if ((scompare(user_input, "<help>") == 0)
+	    || (scompare(user_input, "help") == 0)
+	    || (scompare(user_input, "h") == 0))	{
+		return true;		
+	} else {
+		return false;
+	}
+}
+
+bool inventory(){
+	print("");
+	print("Your inventory:");
+	if (coffee){
+		print("Coffee");
+	}
+	if (key) {
+		print("Key");
+	}
+	if (dollar) {
+		print("Dollar");
+	}
+	if (ast) {
+		print("ast file");
+	}
+	if (scanner) {
+		print("scanner file");
+	}
+	if (codegen) {
+		print("codegen file");
+	}
+	if (parser) {
+		print("parser file");
+	}	
+	print("");
+	return true;
+}
+	
 
 int character(){
 	string character_prompt;
@@ -46,7 +87,7 @@ int character(){
 		return 0;
 	}
 
-	if (scompare(user_input, "<help>") == 0){
+	if (help(user_input)){
 		print("");
 		print("Enter a number 1-4");
 		print("");
@@ -64,14 +105,15 @@ int character(){
 }
 
 
-int outdoors(bool description){
+int outdoors(bool description, bool header){
 	string text;	
 	string user_input;
 
-	print("~~~~~~~~~~~~~~~~~~~~");
 	if (description){
 		text = "You stand outside Mathematics with your team. Rays of sun peak through the leaves of the oak, showering you four brave souls. You are optimistic for the semester ahead.";
 		print(text);
+		print("");
+		print("Type <Enter Mathematics building> to get started on your journey.");
 		print("");
 	}
 
@@ -87,28 +129,34 @@ int outdoors(bool description){
 		print("The only winning move is not to play.");
 		print("");
 		return 0;
+	}
+
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		outdoors(false, false);
+		return 0;
 	} 
 	
-	if (scompare(user_input, "<help>") == 0){
+	if (help(user_input)){
 		print("");
 		print("Your options:");
 		print("Enter Mathematics building");
 		print("Drop out of school");
+		print("Inventory");
 		print("");
-		outdoors(false);
+		outdoors(false, false);
 		return 0;
 	}
 	
-
 	print("");
 	print("Sorry. That is not an option.");
 	print("Your options:");
 	print("Enter Mathematics building");
 	print("Drop out of school");
+	print("Inventory");
 	print("");
-	outdoors(false);	 
+	outdoors(false, false);	 
 	
-
 	return 0;
 }
 
@@ -119,7 +167,8 @@ int mathtwo(bool description, bool header){
 	
 	if (header){
 		print("~~~~~~~~~~~~~~~~~~~~");
-		print("Math 2nd Floor");
+		print("[Math 3rd Floor]");
+		print("");
 	}
 
 	if (description){
@@ -127,17 +176,64 @@ int mathtwo(bool description, bool header){
 		print("You walk through the double doors into the math building. Your teammates immediately vanish. You won't be seeing them again.");
 		print("You look around. To your left is the library, to your right is a door labeled [307]. There are stairs leading up, and stairs leading down. There is an elevator. A student walks out of the library looking... slightly off.");
 		print("");
-		print("The student walks right up to you and hands you a sheet of paper.");
-		print("");
-		print("What's this? you ask");
-		print("The student responds: Your scanner. The rest won't be so easy.");
-		print("The student runs off.");
-		print("");
-		scanner = true;
 	} 		
 
 	
 	user_input = input();
+
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		if (!scanner) {
+			print("Talk to student");
+		}
+		print("Enter library");
+		print("Enter [307]");
+		print("Go upstairs");
+		print("Go downstairs");
+		print("enter elevator");		
+		if (librarian && coffee) {
+			print("Throw coffee in trash");
+		}
+		print("Inventory");
+		print("");
+		mathtwo(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		mathtwo(false, false);
+		return 0;
+	} 
+
+	if ((scompare(user_input, "talk to student") != 0) && (!scanner)){
+		print("");
+		print("The student blocks your path.");
+		print("");
+		mathtwo(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "talk to student") == 0) && (!scanner)){
+		print("");
+		print("You ask: What is your problem?");
+		print("");
+		print("The student hands you a piece of paper.");
+		print("");
+		print("You ask: What is this?");
+		print("");
+		print("The student responds: Your scanner. The rest won't be so easy.");
+		print("The student runs off.");
+		print("");
+		scanner = true;
+		if (finished()){
+			return 0;
+		}
+		mathtwo(false, false);
+		return 0;
+	}
 
 	if (scompare(user_input, "throw coffee in trash") == 0){
 		coffee = false;
@@ -150,13 +246,13 @@ int mathtwo(bool description, bool header){
 
 	if ((scompare(user_input, "enter [307]")==0) || (scompare(user_input, "enter 307")==0)){
 		if (key){
-			print("");
-			print("haven't implemented that bit yet -James"); 
-			mathtwo(false, false);
+			print("You unlock the door with the key from Julie.");
+			room307(true, true);	
 			return 0;
 		} else {
 			print("");
 			print("This door is locked, you'll need a key.");
+			print("");
 			mathtwo(false, false);
 			return 0;
 		}
@@ -164,20 +260,18 @@ int mathtwo(bool description, bool header){
 
 	if (scompare(user_input, "go upstairs") == 0){
 		print("");
-		print("haven't implemented that bit yet -James"); 
-		mathtwo(false, false);	
+		maththree(true, true);	
 		return 0;
 	}
 
 	if (scompare(user_input, "go downstairs") == 0){
 		print("");
-		print("haven't implemented that bit yet -James"); 
-		mathtwo(false, false);	
+		mathone(true, true);	
 		return 0;
 	}
 
 	if (scompare(user_input, "enter elevator") == 0){
-		elevator(true);
+		elevator(true, true);
 		return 0;
 	}
 
@@ -185,11 +279,9 @@ int mathtwo(bool description, bool header){
 		library(true, true);
 		return 0;
 	}
-	
-
 
 	##help##
-	if (scompare(user_input, "<help>") == 0){
+	if (help(user_input)){
 		print("");
 		print("Your options:");
 		print("Enter library");
@@ -200,8 +292,92 @@ int mathtwo(bool description, bool header){
 		if (librarian && coffee) {
 			print("Throw coffee in trash");
 		}
+		print("Inventory");
 		print("");
 		mathtwo(false, false);
+		return 0;
+	}
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	mathtwo(false, false);	 
+	return 0;
+}
+
+
+int elevator(bool description, bool header){
+	string user_input;
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[Elevator]");
+		print("");
+	}
+	if (description){
+		print("Over head an LED flickers. A student stands in the corner, staring at their phone. None of the buttons are pressed. The buttons read:");
+		print("[4]");
+		print("[3]");
+		print("[2]");
+		print("[Drop out of school]");
+		print("");
+	}
+	
+	user_input = input();
+	
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		elevator(false, false);
+		return 0;
+	} 
+
+	if ((scompare(user_input, "2")==0) 
+		|| (scompare(user_input, "[2]")==0)
+		|| (scompare(user_input, "press [2]")==0)
+		|| (scompare(user_input, "press 2")==0)){
+		print("");
+		mathone(true, true);
+		return 0;
+	}	
+	
+	if ((scompare(user_input, "3")==0) 
+		|| (scompare(user_input, "[3]")==0)
+		|| (scompare(user_input, "press [3]")==0)
+		|| (scompare(user_input, "press 3")==0)){
+		print("");
+		mathtwo(false, true);
+		return 0;
+	}	
+	
+	if ((scompare(user_input, "4")==0) 
+		|| (scompare(user_input, "[4]")==0)
+		|| (scompare(user_input, "press [4]")==0)
+		|| (scompare(user_input, "press 4")==0)){
+		print("");
+		maththree(true, true);
+		return 0;
+	}
+
+	if ((scompare(user_input, "drop out")==0) 
+		|| (scompare(user_input, "drop out of school")==0)
+		|| (scompare(user_input, "press drop out of school")==0)){
+		print("");
+		print("The only winning move is not to play.");
+		print("");
+		return 0;
+	}
+
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		print("Press 2");
+		print("Press 3");
+		print("Press 4");
+		print("Drop out of school");
+		print("Inventory");
+		print("");
+		elevator(false, false);
 		return 0;
 	}
 	
@@ -210,17 +386,330 @@ int mathtwo(bool description, bool header){
 	print("Sorry. That is not an option.");
 	print("Type <help> if you're stuck.");
 	print("");
-	mathtwo(false, false);	 
+	elevator(false, false);	 		
+	return 0;
+}
+
+int mathone(bool description, bool header){
+	string user_input;
+
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[Math 2nd floor]");
+		print("");
+	}
+
+	if (description){
+		print("This floor has a bathroom, the elevator, a vending machine, and a door leading to Room [207]");
+		print(""); 
+	}
+
+	user_input = input();
 	
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		mathone(false, false);
+		return 0;
+	} 
+
+	if ((scompare(user_input, "inspect vending machine")==0) 
+		|| (scompare(user_input, "vending machine")==0)){
+		print("");
+		if (!dollar){
+			print("You have no money.");
+			print("");
+		} else {
+			print("Everything in this vending machine costs more than a dollar. Except... What is that?! A rolled up piece of paper in the bottom row costs exactly $1.");
+			print("");
+			vending = true;
+		}
+		mathone(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "buy paper")==0) ||
+		(scompare(user_input, "buy rolled up paper") == 0)){
+		if (!dollar){
+			print("You have no money.");
+			print("");
+		} else {
+			print("You buy the paper. Upon inspection you find out it is a codegen file.");
+			print("");
+			dollar = false;
+			codegen = true;
+			if (finished()){
+				return 0;
+			}
+			
+		}
+		mathone(false, false);
+		return 0;
+	}
+
+	if (scompare(user_input, "go upstairs") == 0){
+		print("");
+		mathtwo(false, true);	
+		return 0;
+	}
+
+	if ((scompare(user_input, "elevator")==0) 
+		|| (scompare(user_input, "enter elevator")==0)){
+		elevator(true, true);
+		return 0;
+	}
+		
+	if (scompare(user_input, "Enter bathroom") == 0){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[Bathroom]");
+		print("");
+		print("You spend a few minutes in the bathroom, then leave, relieved.");
+		mathone(false, true);	
+		return 0;
+	}
+	
+	if ((scompare(user_input, "enter room 207")==0) 
+		|| (scompare(user_input, "enter 207")==0)
+		|| (scompare(user_input, "enter [207]")==0)){
+		room207(true, true);
+		return 0;
+	}
+	
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		print("Enter [207]");
+		print("Go upstairs");
+		print("Enter elevator");
+		if (!vending){
+			print("Inspect vending machine");
+		} else {
+			print("Buy paper");
+		}
+		print("Enter bathroom");
+		print("Inventory");
+		print("");
+		mathone(false, false);
+		return 0;
+	}	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	mathone(false,false);
+	return 0;
+}
+
+int room207(bool description, bool header){
+
+	print("~~~~~~~~~~~~~~~~~~~~");	
+	print("[Room 207]");
+	print("");
+
+	print("This lecture hall is full. The lecturer is a handsome man with glasses wearing a t-shirt with a joke on it. You don't get the joke. He stops lecturing and turns towards you.");
+	print("Tiffany? he asks.");
+	print("N-no? you respond.");
+	print("You decide maybe you should leave.");	
+	print(""); 
+	
+	mathone(false, true);	
+	return 0;
+}
+
+int maththree(bool description, bool header){
+	string user_input;
+
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[Math 4th floor]");
+		print("");
+	}
+
+	if (description){
+		print("To you left is the TA help room. There is a staircase behind you and an elevator in front of you.");
+		print(""); 
+	}
+
+	user_input = input();
+	
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		maththree(false, false);
+		return 0;
+	} 
+
+	if ((scompare(user_input, "elevator")==0) 
+		|| (scompare(user_input, "enter elevator")==0)){
+		elevator(true, true);
+		return 0;
+	}
+
+	if (scompare(user_input, "go downstairs") == 0){
+		print("");
+		mathtwo(false, true);	
+		return 0;
+	}
+	
+	if ((scompare(user_input, "enter TA room")==0) 
+		|| (scompare(user_input, "enter help room")==0)
+		|| (scompare(user_input, "enter TA help room")==0)){
+		taroom(true, true);
+		return 0;
+	}
+	
+	
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		print("Enter TA help room");
+		print("Go downstairs");
+		print("Enter elevator");
+		print("Inventory");
+		print("");
+		maththree(false, false);
+		return 0;
+	}	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	maththree(false,false);
+	return 0;
+}
+
+int taroom(bool description, bool header){
+	string user_input;
+
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[TA help room]");
+		print("");
+	}
+
+	if (description){
+		print("Oh, thank god. Julie's in the TA room, ready to help you out.");
+		print(""); 
+	}
+
+	user_input = input();
+
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		taroom(false, false);
+		return 0;
+	} 
+
+	if ((scompare(user_input, "talk to julie")==0) 
+		|| (scompare(user_input, "talk julie")==0)){
+		print("");
+		print("Julie answers all of your questions, staying well past her posted office hours ended. Because of her, you now have a working ast!! She is incredible and deserves a raise.");
+		print(""); 
+		ast = true;
+		if (finished()){
+			return 0;
+		}
+		taroom(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "leave ta help room")==0) 
+		||(scompare(user_input, "leave ta room")==0) 
+		|| (scompare(user_input, "leave help room")==0)){
+		if (ast){
+			print("");
+			print("Julie stops you: Hey! I think you dropped this.");
+			print("She hands you a key. You thank her and leave.");
+			key = true;
+			print("");
+		}
+		maththree(false, true);	
+		return 0;
+	}
+		
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		print("Talk to Julie");
+		print("Leave TA room");
+		print("Inventory");
+		print("");
+		taroom(false, false);
+		return 0;
+	}	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	taroom(false,false);
 
 	return 0;
 }
 
-
-int elevator(bool description){
+int room307(bool description, bool header){
 	string user_input;
-	print("~~~~~~~~~~~~~~~~~~~~");	
-	print("no elevator yet");
+
+	if (header){
+		print("~~~~~~~~~~~~~~~~~~~~");	
+		print("[Room 307]");
+		print("");
+	}
+
+	if (description){
+		print("Room 307 is almost empty. There is a large blackboard with strange symbols on it. On the floor is a single dollar bill.");
+		print(""); 
+	}
+
+	user_input = input();
+	
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		room307(false, false);
+		return 0;
+	} 
+	
+	if ((scompare(user_input, "pick up dollar bill")==0) 
+		|| (scompare(user_input, "pick up dollar")==0)){
+		print("");
+		print("You are one dollar richer. Maybe use it for some snacks.");
+		print("");
+		dollar = true; 
+		room307(false, false);
+		return 0;
+	}
+
+	if ((scompare(user_input, "leave 307")==0) 
+		||(scompare(user_input, "leave [307]")==0) 
+		|| (scompare(user_input, "leave room 307")==0)){
+		mathtwo(false, true);	
+		return 0;
+	}
+	
+		
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		if (!dollar){
+			print("Pick up dollar");	
+		}
+		print("Leave 307");
+		print("Inventory");
+		print("");
+		room307(false, false);
+		return 0;
+	}	
+
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	room307(false,false);
+
 	return 0;
 }
 
@@ -247,6 +736,13 @@ int library(bool description, bool header){
 
 	user_input = input();
 
+	if ((scompare(user_input, "inventory") == 0)){
+		inventory();
+		library(false, false);
+		return 0;
+	} 
+	
+
 	if (scompare(user_input, "leave library") == 0){
 		mathtwo(false, true);
 		return 0;
@@ -262,13 +758,49 @@ int library(bool description, bool header){
 		}
 
 		parser = true;
+		if (finished()){
+			return 0;
+		}
 		print("Congratulations! Your studies have paid off, and you now have a working parser.");
 		print("");
 		##here is where we'll check how much progress has been made so far.##
 		library(false, false);
-		return 0;						 	  }
+		return 0;						 	
+	}
+
+	##help##
+	if (help(user_input)){
+		print("");
+		print("Your options:");
+		print("Leave library");
+		print("Study");
+		print("Inventory");
+		print("");
+		library(false, false);
+		return 0;
+	}
+	
+	
+	print("");
+	print("Sorry. That is not an option.");
+	print("Type <help> if you're stuck.");
+	print("");
+	library(false, false);	 
 	
 	return 0;
+}
+
+bool finished(){
+	if (parser){
+	  if (ast) {
+	    if (scanner) {
+	      if (codegen) {
+		print("");
+		print("Congratulations! You now have a working language. Go enjoy summer break.");
+		print("");
+		return true;
+	}}}}
+	return false;
 }
 
 int main(){
@@ -282,6 +814,8 @@ int main(){
 	ast = false;
 	codegen = false;
 	key = false;
+	dollar = false;
+	vending = false;
 
 	print("");
 	intro_text = "Welcome to 4115 the game. The objective of this game is to build your own programming language. You will work on a team with three of your peers. In this game, you must find the pieces to build your language. Good luck!";
@@ -292,7 +826,7 @@ int main(){
 	print("");
 
 	character();
-	outdoors(true);	
+	outdoors(true, true);	
 
 	return 0;
 }
