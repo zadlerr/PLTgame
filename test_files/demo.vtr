@@ -192,7 +192,7 @@ int mathtwo(bool description, bool header){
 		print("Enter [307]");
 		print("Go upstairs");
 		print("Go downstairs");
-		print("enter elevator");		
+		print("Enter elevator");		
 		if (librarian && coffee) {
 			print("Throw coffee in trash");
 		}
@@ -288,7 +288,7 @@ int mathtwo(bool description, bool header){
 		print("Enter [307]");
 		print("Go upstairs");
 		print("Go downstairs");
-		print("enter elevator");		
+		print("Enter elevator");		
 		if (librarian && coffee) {
 			print("Throw coffee in trash");
 		}
@@ -604,6 +604,13 @@ int taroom(bool description, bool header){
 
 	if ((scompare(user_input, "talk to julie")==0) 
 		|| (scompare(user_input, "talk julie")==0)){
+		if (ast) {
+			print("");
+			print("Julie can only do so much for you. Go figure something out on your own.");
+			print("");
+			taroom(false, false);
+			return 0;
+		}
 		print("");
 		print("Julie answers all of your questions, staying well past her posted office hours ended. Because of her, you now have a working ast!! She is incredible and deserves a raise.");
 		print(""); 
