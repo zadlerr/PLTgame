@@ -11,6 +11,7 @@ bool vending;
 bool help(string user_input){
 	if ((scompare(user_input, "<help>") == 0)
 	    || (scompare(user_input, "help") == 0)
+	    || (scompare(user_input, "") == 0)
 	    || (scompare(user_input, "h") == 0))	{
 		return true;		
 	} else {
