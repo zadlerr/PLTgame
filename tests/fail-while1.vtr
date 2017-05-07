@@ -1,0 +1,14 @@
+int main(){
+
+  int i; 
+
+  while(true) {
+    i = i + 1;
+  } ## forever loop ##
+
+  while (505) { ## needs to be bool ##
+    i = i + 1;
+  }
+
+}
+
