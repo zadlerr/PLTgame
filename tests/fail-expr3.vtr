@@ -1,0 +1,11 @@
+int a;
+bool b;
+
+int main()
+{
+  string e;
+  int z;
+  a + z;
+  b + e; ## Error: bool + string ##
+  return 0;
+}
