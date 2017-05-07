@@ -1,0 +1,10 @@
+int foo(){
+
+  string x;
+  x = "YO YO YO";
+  if(true) return x; ## should return int ##
+  else return 5;
+
+}
+
+int main(){ return 0; }
