@@ -1,0 +1,7 @@
+int c;
+bool b;
+int c; ## duplicate global variable ##
+
+int main(){
+	return 0;
+}

@@ -1,0 +1,7 @@
+int c;
+bool b;
+void c; ## illegal void global variable ##
+
+int main(){
+	return 0;
+}
