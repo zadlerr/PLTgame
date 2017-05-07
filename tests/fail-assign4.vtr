@@ -1,0 +1,8 @@
+int main()
+{
+  int i;
+  string str;
+  i = 5; 
+  str = i;  ## Fail: assigning an int to a string ##
+  return 0;
+}
