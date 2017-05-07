@@ -1,18 +1,6 @@
 Venture TODO list
 
-James:
-Structs
-
-Ben:
-Working testing suite
-
-Naina:
-Working string assignment
-Working string functions
+Write up
 
 Zach:
 Semantic Checker
-
-Next Steps:
-IO - can't really do until we get strings working
-	may just use C library once we figure out how that works
