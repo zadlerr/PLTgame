@@ -1,0 +1,7 @@
+int foo(int a){}
+
+void bar(bool b, int a, bool b){} ##duplicate formal bool b ##
+
+int main(){
+  return 0;
+}

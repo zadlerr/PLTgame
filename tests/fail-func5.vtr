@@ -1,0 +1,8 @@
+void baz(){
+  int c;
+  void b; ## illegal void local b ##
+  bool f;
+}
+
+int main(){ return 0; }
+

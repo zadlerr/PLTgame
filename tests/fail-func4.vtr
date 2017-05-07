@@ -1,0 +1,6 @@
+int doNothing(){
+}
+
+void print(){} ## can't redefine print ##
+
+int main(){ return 0; }

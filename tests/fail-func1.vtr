@@ -1,0 +1,12 @@
+int baz (){}
+
+string bar(){}
+
+void foo(){}
+
+bool bar(){} ## duplicate function name ##
+
+int main()
+{
+  return 0;
+}

@@ -1,0 +1,12 @@
+int add(int a, int b){return a+b;}
+
+void voidFunc(){}
+
+int main(){
+ 
+  add(1,17);
+  string x;
+  x = "YO YO YO";
+  add(true, x); ## bool, instead of int##
+
+}

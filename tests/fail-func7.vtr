@@ -1,0 +1,16 @@
+int something(int b){
+	return b;
+}
+
+void nothing(bool c, int i){
+
+}
+
+int main(){
+  
+  int x;
+  x = something(4);
+  print(x);
+  nothing(true, 21, "HEYO"); ## wrong number of args ##
+  return 0;
+}
