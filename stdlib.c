@@ -13,14 +13,6 @@ char* input( ) {
 
 
 
-int intcompare(char *s1) {
-
-        int retval = strcmp(s1, "1");
-        return retval;
-
-}
-
-
 char* lower(char *s) {
 
 	char *retstr = strdup(s);
