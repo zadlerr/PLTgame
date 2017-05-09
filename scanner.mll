@@ -56,16 +56,4 @@ rule token = parse
 	| "##"					{ token lexbuf }	(* comment end *)
 	| _					{ comment lexbuf }	(* eat everything else *)
 	 
-	(*
-	| '['					{ LBRACK }
-	| ']'					{ RBRACK }
-	| '.'					{ ACCESS }		(* operators *)
-	| "fun"					{ FUN }			(* keywords *)
-	| "events"				{ EVENTS }
-	| "room"				{ ROOM }
-	| "item"				{ ITEM }
-	| "start"				{ START }
-	| "npc"					{ NPC }
-	| "end"					{ END }
-	*)
 
