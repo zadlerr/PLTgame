@@ -1,8 +1,0 @@
-Known bugs and issues:
-No nested comments
-starting an expression with '-' ignores the minus
-
-
-Need to test:
-More extensive custom functions
-void

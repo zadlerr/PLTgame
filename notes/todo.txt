@@ -1,6 +1,0 @@
-Venture TODO list
-
-Write up
-
-Zach:
-Semantic Checker

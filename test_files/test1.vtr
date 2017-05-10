@@ -1,8 +1,0 @@
-int main(){
-	string foo;
-        
-        print("TEST 1");
-	
-	foo = "hello world";
-        print(foo);
-        return 0; }
